@@ -7,9 +7,9 @@ namespace Compiler
 {
     public static class FragmentCompiler
     {
-        public static FragmentFile CompileFile(string filepath)
+        public static FragmentedFile CompileFile(string filepath)
         {
-            FragmentFile cfile = new FragmentFile();
+            FragmentedFile cfile = new FragmentedFile();
 
             using (StreamReader reader = new StreamReader(filepath))
             {
@@ -44,6 +44,7 @@ namespace Compiler
                                 state = 0;
                                 string value = builder.BuildString();
 
+                                // Determine which framgent needs to be added
                                 cfile.Content.Add(new RenderBodyCompilerSection());
                             }
                             else
@@ -70,12 +71,12 @@ namespace Compiler
         }
     }
 
-    public interface IDocumentFragment
+    public interface IFragment
     {
         string CompileToString();
     }
 
-    public class StringCompilerSection : IDocumentFragment
+    public class StringCompilerSection : IFragment
     {
         private string _value;
 
@@ -90,7 +91,7 @@ namespace Compiler
         }
     }
 
-    public class RenderBodyCompilerSection : IDocumentFragment
+    public class RenderBodyCompilerSection : IFragment
     {
         public string CompileToString()
         {
@@ -98,15 +99,15 @@ namespace Compiler
         }
     }
 
-    public class FragmentFile
+    public class FragmentedFile
     {
-        public List<IDocumentFragment> Content { get; } = new List<IDocumentFragment>();
+        public List<IFragment> Content { get; } = new List<IFragment>();
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
 
-            foreach (IDocumentFragment s in Content)
+            foreach (IFragment s in Content)
             {
                 builder.Append(s.CompileToString());
             }

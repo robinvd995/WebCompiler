@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using WebCompiler.HtmlBuilder;
 
-namespace Compiler
+namespace Compiler.Common
 {
     public abstract class WebAsset
     {
@@ -74,8 +74,9 @@ namespace Compiler
 
         public override string ToHtml()
         {
-            _builder.PushElement("script", true);
+            _builder.PushElement("script", false);
             _builder.AddAttribute("src", FilePath);
+            _builder.PopElement();
             string html = _builder.BuildHTML();
             _builder.Clear();
             return html;

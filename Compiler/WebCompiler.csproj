@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if not exist $(ProjectDir)$(OutDir)\html mkdir $(ProjectDir)$(OutDir)\html&#xD;&#xA;&#xD;&#xA;copy $(ProjectDir)\config.json $(ProjectDir)$(OutDir)\&#xD;&#xA;copy $(ProjectDir)\html\* $(ProjectDir)$(OutDir)\html\" />
+    <Exec Command="if not exist $(ProjectDir)$(OutDir)\html mkdir $(ProjectDir)$(OutDir)\html&#xD;&#xA;if not exist $(ProjectDir)$(OutDir)\html\_common mkdir $(ProjectDir)$(OutDir)\html\_common&#xD;&#xA;&#xD;&#xA;copy $(ProjectDir)\config.json $(ProjectDir)$(OutDir)\&#xD;&#xA;copy $(ProjectDir)\html\* $(ProjectDir)$(OutDir)\html\&#xD;&#xA;copy $(ProjectDir)\html\_common\* $(ProjectDir)$(OutDir)\html\_common\" />
   </Target>
 
 </Project>
