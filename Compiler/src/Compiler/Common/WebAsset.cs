@@ -10,20 +10,23 @@ namespace Compiler.Common
     {
         internal static HtmlBuilder _builder = new HtmlBuilder();
 
-        public WebAsset(string filepath)
+        public WebAsset(string inpath, string outpath)
         {
-            FilePath = filepath;
+            FilePath = inpath;
+            OutputPath = outpath;
         }
 
         public string FilePath { get; private set; }
+        public string OutputPath { get; private set; }
 
         public static WebAsset FromString(string filepath)
         {
             string fileExtension = Path.GetExtension(filepath);
+            string fileName = Path.GetFileName(filepath);
             WebAsset include = fileExtension switch
             {
-                ".css" => new WebAssetStyleSheet(filepath),
-                ".js" => new WebAssetJavaScript(filepath),
+                ".css" => new WebAssetStyleSheet(filepath, "css/" + fileName),
+                ".js" => new WebAssetJavaScript(filepath, "js/" + fileName),
                 _ => new WebAssetUnknown()
             };
 
@@ -36,7 +39,7 @@ namespace Compiler.Common
     public class WebAssetUnknown : WebAsset
     {
         public WebAssetUnknown() :
-            base("")
+            base("", "")
         { }
 
         public override string ToHtml()
@@ -47,8 +50,8 @@ namespace Compiler.Common
 
     public class WebAssetStyleSheet : WebAsset
     {
-        public WebAssetStyleSheet(string filepath) :
-            base(filepath)
+        public WebAssetStyleSheet(string inpath, string outpath) :
+            base(inpath, outpath)
         {
 
         }
@@ -57,7 +60,7 @@ namespace Compiler.Common
         {
             _builder.PushElement("link", true);
             _builder.AddAttribute("rel", "stylesheet");
-            _builder.AddAttribute("href", FilePath);
+            _builder.AddAttribute("href", OutputPath);
             string html = _builder.BuildHTML();
             _builder.Clear();
             return html;
@@ -66,8 +69,8 @@ namespace Compiler.Common
 
     public class WebAssetJavaScript : WebAsset
     {
-        public WebAssetJavaScript(string filepath) :
-            base(filepath)
+        public WebAssetJavaScript(string inpath, string outpath) :
+            base(inpath, outpath)
         {
 
         }
@@ -75,7 +78,7 @@ namespace Compiler.Common
         public override string ToHtml()
         {
             _builder.PushElement("script", false);
-            _builder.AddAttribute("src", FilePath);
+            _builder.AddAttribute("src", OutputPath);
             _builder.PopElement();
             string html = _builder.BuildHTML();
             _builder.Clear();

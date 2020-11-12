@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using WebCompiler.Util;
 
 namespace Compiler.Common
 {
@@ -24,17 +25,20 @@ namespace Compiler.Common
             CommonLayout commonLayout = new CommonLayout();
             commonLayout.SetSource(source);
 
+            Logger.Write("Adding includes...");
             foreach (string s in config.Includes)
             {
                 WebAsset asset = WebAsset.FromString(s);
                 commonLayout.AddInclude(asset);
             }
+            Logger.Write(string.Format("{0} includes added!", commonLayout._includes.Count));
 
             return commonLayout;
         }
 
         public void SetSource(string source)
         {
+            Logger.Write("Scanning source for macros...");
             int macroStart = -1;
 
             for(int i = 0; i < source.Length - 1; i++)
@@ -65,14 +69,18 @@ namespace Compiler.Common
                 case "RenderBody":
                     _renderBodyStart = start;
                     _renderBodyEnd = end;
+                    Logger.Write("Found RenderBody macro!");
                     break;
 
                 case "Includes":
                     _includeStart = start;
                     _includeEnd = end;
+                    Logger.Write("Found Includes macro!");
                     break;
 
-                default: throw new CommonLayoutCompileException(string.Format("Unknown Macro Identifier found: {0}", macro));
+                default:
+                    Logger.Write(string.Format("Unknown macro with identifier {0} found!", macro));
+                    break;
             }
         }
 
@@ -107,6 +115,11 @@ namespace Compiler.Common
                 builder.Append(asset.ToHtml() + '\n');
             }
             return builder.ToString();
+        }
+
+        public IEnumerator<WebAsset> GetIncludesEnumerator()
+        {
+            return _includes.GetEnumerator();
         }
     }
 

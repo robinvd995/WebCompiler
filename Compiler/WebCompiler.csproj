@@ -18,7 +18,11 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if not exist $(ProjectDir)$(OutDir)\html mkdir $(ProjectDir)$(OutDir)\html&#xD;&#xA;if not exist $(ProjectDir)$(OutDir)\html\_common mkdir $(ProjectDir)$(OutDir)\html\_common&#xD;&#xA;&#xD;&#xA;copy $(ProjectDir)\config.json $(ProjectDir)$(OutDir)\&#xD;&#xA;copy $(ProjectDir)\html\* $(ProjectDir)$(OutDir)\html\&#xD;&#xA;copy $(ProjectDir)\html\_common\* $(ProjectDir)$(OutDir)\html\_common\" />
+    <Exec Command="if exist $(ProjectDir)$(OutDir)html RD /S /Q &quot;$(ProjectDir)$(OutDir)html&quot;&#xD;&#xA;&#xD;&#xA;" />
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir $(ProjectDir)$(OutDir)html&#xD;&#xA;xcopy /d /e /-y &quot;$(ProjectDir)html&quot; &quot;$(ProjectDir)$(OutDir)html&quot;&#xD;&#xA;copy $(ProjectDir)config.json $(ProjectDir)$(OutDir)" />
   </Target>
 
 </Project>

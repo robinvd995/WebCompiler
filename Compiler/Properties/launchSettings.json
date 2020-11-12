@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebCompiler": {
+      "commandName": "Project",
+      "commandLineArgs": "OpenPage=Index.html"
+    }
+  }
+}
