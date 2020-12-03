@@ -2,12 +2,8 @@
   "Name": "Index.html",
   "References": [
     {
-      "Identifier": "index0",
+      "Identifier": "Kind",
       "Sections": [
-        {
-          "Type": "h2",
-          "Content": "Example Title"
-        },
         {
           "Type": "p",
           "Content": "Lorem ipsum"
@@ -15,12 +11,17 @@
       ]
     },
     {
-      "Identifier": "index1",
+      "Identifier": "Ouder",
       "Sections": [
         {
-          "Type": "h2",
-          "Content": "Example Title 2"
-        },
+          "Type": "p",
+          "Content": "Lorem ipsum 2"
+        }
+      ]
+    },
+    {
+      "Identifier": "Leerling",
+      "Sections": [
         {
           "Type": "p",
           "Content": "Lorem ipsum 2"

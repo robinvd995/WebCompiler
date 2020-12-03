@@ -2,15 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebEditor
 {
-    public class PageViewModel
+    public class PageViewModel : ViewModelBase
     {
+        private ReferenceViewModel _activeReference;
+
         public string Name { get; set; }
+
+        public ReferenceViewModel ActiveReference
+        {
+            get
+            {
+                return _activeReference;
+            }
+            set
+            {
+                _activeReference = value;
+                OnPropertyChanged("ActiveReference");
+            }
+        }
 
         public List<ReferenceViewModel> References { get; set; }
 
@@ -28,9 +40,23 @@ namespace WebEditor
         public List<SectionViewModel> Sections { get; set; }
     }
 
-    public class SectionViewModel
+    public class SectionViewModel : ViewModelBase
     {
+        private string _content;
+
         public string Type { get; set; }
-        public string Content { get; set; }
+        public string Content
+        {
+            get
+            {
+                return _content;
+            }
+            set
+            {
+                _content = value;
+                ApplicationManager.Instance.OnContentChanged();
+                OnPropertyChanged("Content");
+            }
+        }
     }
 }

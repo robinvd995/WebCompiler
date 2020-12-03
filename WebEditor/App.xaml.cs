@@ -15,10 +15,7 @@ namespace WebEditor
     {
         public App()
         {
-            PageViewModel pvm = PageViewModel.FromJson("References.json");
-            string index0 = ViewModelCompiler.Compile(pvm, "index0");
-            Console.WriteLine(index0);
-           
+            ApplicationManager.Instance.Initialize();
         }
     }
 }

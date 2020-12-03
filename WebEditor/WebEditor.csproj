@@ -73,8 +73,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Source\HtmlBuilder\HtmlBuilder.cs" />
-    <Compile Include="Source\HtmlBuilder\HtmlElement.cs" />
     <Compile Include="Source\MainViewModel.cs" />
     <Compile Include="Source\PageViewModel.cs" />
     <Compile Include="Source\ViewModelCompiler.cs" />
@@ -115,7 +113,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="References.json" />
+    <None Include="References\About.html.json" />
+    <None Include="References\Index.html.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -132,5 +131,18 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompilerLib\CompilerLib.csproj">
+      <Project>{32378368-7d0f-466a-a451-e547bb86e613}</Project>
+      <Name>CompilerLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if exist $(ProjectDir)$(OutDir)References RD /S /Q "$(ProjectDir)$(OutDir)References"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir $(ProjectDir)$(OutDir)References
+xcopy /d /e /-y "$(ProjectDir)References" "$(ProjectDir)$(OutDir)References"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

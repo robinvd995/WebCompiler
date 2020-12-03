@@ -1,0 +1,13 @@
+{
+  "CommonLayout": "html/_common/CommonLayout.html",
+  "SourceFolder": "html/",
+  "OutputFolder": "out/",
+
+  "Includes": [
+    "html/lib/example/javascript.js",
+    "html/lib/example/stylesheet.css",
+    "html/css/main.css"
+  ],
+
+  "Excludes": []
+}

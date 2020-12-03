@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebEditor
+namespace WebCompiler.HtmlBuilder
 {
     public class HtmlElement
     {
@@ -28,7 +28,7 @@ namespace WebEditor
             if (!Single)
             {
                 builder.Append(Value);
-                foreach (var child in Children)
+                foreach(var child in Children)
                 {
                     child.BuildElement(builder);
                 }
@@ -43,7 +43,7 @@ namespace WebEditor
             builder.Append("<");
             builder.Append(ElementTag);
 
-            if (Attributes.Count > 0)
+            if(Attributes.Count > 0)
             {
                 builder.Append(" ");
                 foreach (var pair in Attributes)

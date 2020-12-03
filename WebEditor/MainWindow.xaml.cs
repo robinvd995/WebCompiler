@@ -28,13 +28,36 @@ namespace WebEditor
             MainViewModel viewModel = new MainViewModel();
             viewModel.Pages = new List<string>
             {
-                "page0",
-                "page1",
-                "page2",
-                "page3"
+                "Index.html",
+                "About.html"
             };
             DataContext = viewModel;
 
+        }
+    }
+
+    public class SectionItemTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            FrameworkElement element = container as FrameworkElement;
+
+            if (element != null && item != null && item is SectionViewModel)
+            {
+                SectionViewModel section = item as SectionViewModel;
+
+                switch (section.Type)
+                {
+                    default: return element.FindResource("SectionTemplate_Unknown") as DataTemplate;
+                    case "p": return element.FindResource("SectionTemplate_Paragraph") as DataTemplate;
+                    case "h1": return element.FindResource("SectionTemplate_Header1") as DataTemplate;
+                    case "h2": return element.FindResource("SectionTemplate_Header2") as DataTemplate;
+                    case "h3": return element.FindResource("SectionTemplate_Header3") as DataTemplate;
+                    case "h4": return element.FindResource("SectionTemplate_Header4") as DataTemplate;
+                }
+            }
+
+            return null;
         }
     }
 }

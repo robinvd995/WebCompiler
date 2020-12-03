@@ -1,0 +1,30 @@
+﻿{
+  "Name": "About.html",
+  "References": [
+    {
+      "Identifier": "About",
+      "Sections": [
+        {
+          "Type": "h2",
+          "Content": "Example Title"
+        },
+        {
+          "Type": "p",
+          "Content": "Paragraph 1"
+        },
+        {
+          "Type": "p",
+          "Content": "Paragraph 2"
+        },
+        {
+          "Type": "p",
+          "Content": "Paragraph 3"
+        },
+        {
+          "Type": "img",
+          "Content": "Paragraph 3"
+        }
+      ]
+    }
+  ]
+}

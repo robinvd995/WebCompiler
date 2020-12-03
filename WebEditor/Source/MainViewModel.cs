@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace WebEditor
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public class MainViewModel : ViewModelBase
+    {
         private string _selectedPage;
+        private PageViewModel _activePage;
 
         public MainViewModel()
         {
@@ -30,15 +39,21 @@ namespace WebEditor
             set
             {
                 _selectedPage = value;
-                ApplicationManager.OnPageChanged(this, _selectedPage);
+                ApplicationManager.Instance.OnPageChanged(this, _selectedPage);
                 OnPropertyChanged("PageSelected");
             }
         }
-        public PageViewModel ActiveModel { get; set; }
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public PageViewModel ActiveModel
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            get
+            {
+                return _activePage;
+            }
+            set
+            {
+                _activePage = value;
+                OnPropertyChanged("ActiveModel");
+            }
         }
     }
 }

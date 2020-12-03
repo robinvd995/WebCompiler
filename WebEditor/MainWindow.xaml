@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebEditor"
         mc:Ignorable="d"
-        Title="Web Editor" Height="900" Width="1200">
+        Title="Web Editor" Height="800" Width="1200">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
-    
+
+    <Window.Resources>
+        <local:SectionItemTemplateSelector x:Key="SectionTemplateSelector"/>
+    </Window.Resources>
+
     <DockPanel LastChildFill="True">
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
@@ -36,48 +40,88 @@
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0" LastChildFill="True">
                 <ComboBox Padding="6" Margin="4" DockPanel.Dock="Top" ItemsSource="{Binding Path=Pages}" SelectedItem="{Binding Path=PageSelected}"/>
-                <ListView Margin="4">
-                    <ListViewItem Content="Item0"/>
-                    <ListViewItem Content="Item1"/>
-                    <ListViewItem Content="Item2"/>
-                    <ListViewItem Content="Item3"/>
-                    <ListViewItem Content="Item4"/>
-                    <ListViewItem Content="Item5"/>
-                </ListView>
+                <ListBox Margin="4" ItemsSource="{Binding Path=ActiveModel.References}" SelectedItem="{Binding Path=ActiveModel.ActiveReference}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=Identifier}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
-            <StackPanel Grid.Column="2">
-                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
-                    <StackPanel>
-                        <DockPanel Background="LightGray">
-                            <Label HorizontalAlignment="Left">Header 1</Label>
-                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Margin="4 0">Up</Button>
-                                <Button Margin="4 0">Down</Button>
-                                <Button Margin="4 0">CSS</Button>
-                                <Button Margin="4 0">Delete</Button>
-                            </StackPanel>
-                        </DockPanel>
-                        <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Padding="4" BorderThickness="0" Height="40"></TextBox>
-                    </StackPanel>
-                </Border>
-
-                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
-                    <StackPanel>
-                        <DockPanel Background="LightGray">
-                            <Label HorizontalAlignment="Left">Paragraph</Label>
-                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Margin="4 0">Up</Button>
-                                <Button Margin="4 0">Down</Button>
-                                <Button Margin="4 0">CSS</Button>
-                                <Button Margin="4 0">Delete</Button>
-                            </StackPanel>
-                        </DockPanel>
-                        <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Padding="4" BorderThickness="0" Height="160"></TextBox>
-                    </StackPanel>
-                </Border>
-
-            </StackPanel>
+            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Path=ActiveModel.ActiveReference.Sections}" ItemTemplateSelector="{StaticResource SectionTemplateSelector}">
+                        <ItemsControl.Resources>
+                            <DataTemplate x:Key="SectionTemplate_Unknown">
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
+                                    <StackPanel Background="LightSlateGray">
+                                        <DockPanel Background="LightGray">
+                                            <Label HorizontalAlignment="Left" Content="Unknown type:"/>
+                                            <Label HorizontalAlignment="Left" Content="{Binding Path=Type}"/>
+                                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                <Button Margin="4 0">Up</Button>
+                                                <Button Margin="4 0">Down</Button>
+                                                <Button Margin="4 0">CSS</Button>
+                                                <Button Margin="4 0">Delete</Button>
+                                            </StackPanel>
+                                        </DockPanel>
+                                        <Label Content="{Binding Path=Content}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate x:Key="SectionTemplate_Header1">
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
+                                    <StackPanel>
+                                        <DockPanel Background="LightGray">
+                                            <Label HorizontalAlignment="Left">Header 1</Label>
+                                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                <Button Margin="4 0">Up</Button>
+                                                <Button Margin="4 0">Down</Button>
+                                                <Button Margin="4 0">CSS</Button>
+                                                <Button Margin="4 0">Delete</Button>
+                                            </StackPanel>
+                                        </DockPanel>
+                                        <TextBox Text="{Binding Path=Content}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Padding="4" BorderThickness="0" Height="40"></TextBox>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate x:Key="SectionTemplate_Header2">
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
+                                    <StackPanel>
+                                        <DockPanel Background="LightGray">
+                                            <Label HorizontalAlignment="Left">Header 2</Label>
+                                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                <Button Margin="4 0">Up</Button>
+                                                <Button Margin="4 0">Down</Button>
+                                                <Button Margin="4 0">CSS</Button>
+                                                <Button Margin="4 0">Delete</Button>
+                                            </StackPanel>
+                                        </DockPanel>
+                                        <TextBox Text="{Binding Path=Content}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Padding="4" BorderThickness="0" Height="40"></TextBox>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                            <DataTemplate x:Key="SectionTemplate_Paragraph">
+                                <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10">
+                                    <StackPanel>
+                                        <DockPanel Background="LightGray">
+                                            <Label HorizontalAlignment="Left">Paragraph</Label>
+                                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                <Button Margin="4 0">Up</Button>
+                                                <Button Margin="4 0">Down</Button>
+                                                <Button Margin="4 0">CSS</Button>
+                                                <Button Margin="4 0">Delete</Button>
+                                            </StackPanel>
+                                        </DockPanel>
+                                        <TextBox Text="{Binding Path=Content}" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" Padding="4" BorderThickness="0" Height="160"></TextBox>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </DockPanel>
 </Window>
